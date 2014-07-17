@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Windows.UI;
 using neihanshe.Common;
 using System;
 using System.Collections.Generic;
@@ -32,17 +33,22 @@ namespace neihanshe
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         public ObservableCollection<Post> Posts { get; set; }
+
+
         public MainPage()
         {
             Posts = new ObservableCollection<Post>();
             this.InitializeComponent();
 
+            AppHelper.InitStatusBar();
+
+            App.AppWidth = Window.Current.Bounds.Width - 50;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            PostListView.DataContext = this;
         }
+
 
         /// <summary>
         /// 获取与此 <see cref="Page"/> 关联的 <see cref="NavigationHelper"/>。
@@ -119,9 +125,12 @@ namespace neihanshe
 
         private async void LoadPostData()
         {
+            AppHelper.ShowMessage("正在加载数据......");
             HttpHelper helper = new HttpHelper(App.HttpClient);
             string content = await helper.GetHttpString(new Uri(NeihanApi.URL));
             ParseDataUtils.CopyListToObservableCollection(ParseDataUtils.ParsePost(content), Posts);
+            FooterGrid.Visibility = Visibility.Visible;
+            AppHelper.InitStatusBar();
         }
         #endregion
         private void AcceptAppBarButton_OnClick(object sender, RoutedEventArgs e)

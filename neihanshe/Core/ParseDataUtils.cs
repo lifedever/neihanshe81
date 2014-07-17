@@ -37,7 +37,9 @@ namespace neihanshe.Core
                 QNum = itemObject["q_num"].GetString(),
                 TNum = itemObject["t_num"].GetString(),
                 SNum = itemObject["s_num"].GetString(),
-                RNum = itemObject["r_num"].GetString()
+                RNum = itemObject["r_num"].GetString(),
+                Width = App.AppWidth
+                
             }));
 
             return posts;

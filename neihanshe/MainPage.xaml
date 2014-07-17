@@ -8,7 +8,7 @@
     x:Class="neihanshe.MainPage"
     mc:Ignorable="d"
     Loaded="MainPage_OnLoaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    >
     <Page.Resources>
         <convert:AvatarConvert x:Key="AvatarConvert"></convert:AvatarConvert>
         <Style TargetType="Image" x:Key="VoteImageStyle">
@@ -22,7 +22,7 @@
         </Style>
         
         <DataTemplate x:Key="PostsItemTemplate">
-            <Border Background="White" Margin="10 0 10 20" CornerRadius="8">
+            <Border Background="White" Margin="0 0 0 20" CornerRadius="8">
                 <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
@@ -39,7 +39,7 @@
                         <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
-                    <Image MaxWidth="2000" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2"></Image>
+                    <Image MaxWidth="2000" Width="{Binding Width}" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2"></Image>
                     <Grid Grid.Row="3">
                         <Grid VerticalAlignment="Bottom">
                             <Grid.ColumnDefinitions>
@@ -51,7 +51,7 @@
                                     <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
                                     <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="20 0 0 0">
+                                <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="15 0 0 0">
                                     <Image Source="Assets/Images/cry.png" Style="{StaticResource VoteImageStyle}"/>
                                     <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
@@ -67,20 +67,9 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Page.BottomAppBar>
-        <CommandBar ClosedDisplayMode="Minimal">
-            <CommandBar.SecondaryCommands >
-                <AppBarButton Label="设置"/>
-                <AppBarButton Label="关于"/>
-            </CommandBar.SecondaryCommands>
-            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" Click="AcceptAppBarButton_OnClick"/>
-        </CommandBar>
-    </Page.BottomAppBar>
-
     <Grid x:Name="LayoutRoot" 
           Background="{StaticResource AppSolidColorBrush}"
           DataContext="{Binding Source={StaticResource PostsDataSource}}">
-
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -99,9 +88,25 @@
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot">
-            <ListView x:Name="PostListView"
+            <ListView x:Name="PostListView" Margin="10 0"
                       ItemTemplate="{StaticResource PostsItemTemplate}" 
-                      ItemsSource="{Binding Posts}"/>
+                      ItemsSource="{Binding Posts}">
+                <ListView.Footer>
+                    <Border Background="WhiteSmoke" Name="FooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
+                        <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NextPageButton">点击加载下一页</HyperlinkButton>
+                    </Border>
+                </ListView.Footer>
+            </ListView>
         </Grid>
     </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.SecondaryCommands >
+                <AppBarButton Label="设置"/>
+                <AppBarButton Label="关于"/>
+            </CommandBar.SecondaryCommands>
+            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" Click="AcceptAppBarButton_OnClick"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

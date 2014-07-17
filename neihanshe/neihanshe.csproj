@@ -98,6 +98,7 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Core\AppHelper.cs" />
     <Compile Include="Core\Convert\AvatarConvert.cs" />
     <Compile Include="Core\HttpHelper.cs" />
     <Compile Include="Core\Model\Post.cs" />

@@ -25,7 +25,7 @@ namespace neihanshe.Core.Model
         public string TNum { get; set; }
         public string SNum { get; set; }
         public string RNum { get; set; }
-
+        public double Width { get; set; }
         public string UserInfo
         {
             get { return _userInfo; }
