@@ -76,28 +76,45 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- 标题面板 -->
-        <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="首页" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
-        </StackPanel>
-
         <!--TODO: 应将内容放入以下网格-->
-        <Grid Grid.Row="1" x:Name="ContentRoot">
-            <ListView x:Name="PostListView" Margin="10 0"
-                      ItemTemplate="{StaticResource PostsItemTemplate}" 
-                      ItemsSource="{Binding Posts}">
-                <ListView.Footer>
-                    <Border Background="WhiteSmoke" Name="FooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
-                        <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NextPageButton">点击加载下一页</HyperlinkButton>
-                    </Border>
-                </ListView.Footer>
-            </ListView>
-        </Grid>
+        <Pivot SelectionChanged="Pivot_OnSelectionChanged" Name="DataPivot">
+
+            <PivotItem Header="首页">
+                <Grid x:Name="IndexContentRoot">
+                    <ListView x:Name="IndexPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding IndexPosts}">
+                        <ListView.Footer>
+                            <Border Background="WhiteSmoke" Name="IndexFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="IndexNextPageButton">点击加载下一页</HyperlinkButton>
+                            </Border>
+                        </ListView.Footer>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem Header="热门">
+                <Grid x:Name="HotContentRoot">
+                    <ListView x:Name="HotPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding HotPosts}">
+                        <ListView.Footer>
+                            <Border Background="WhiteSmoke" Name="HotFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="HotNextPageButton">点击加载下一页</HyperlinkButton>
+                            </Border>
+                        </ListView.Footer>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem Header="最新">
+                <Grid x:Name="NewContentRoot">
+                    <ListView x:Name="NewPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding NewPosts}">
+                        <ListView.Footer>
+                            <Border Background="WhiteSmoke" Name="NewFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NewNextPageButton">点击加载下一页</HyperlinkButton>
+                            </Border>
+                        </ListView.Footer>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+        </Pivot>
     </Grid>
 
     <Page.BottomAppBar>
@@ -106,7 +123,7 @@
                 <AppBarButton Label="设置"/>
                 <AppBarButton Label="关于"/>
             </CommandBar.SecondaryCommands>
-            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" Click="AcceptAppBarButton_OnClick"/>
+            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" />
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

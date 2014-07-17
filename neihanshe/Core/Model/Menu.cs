@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace neihanshe.Core.Model
 {
-    public class PostList
+    public class Menu
     {
-        public List<Post> Posts { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
 
     }
 }

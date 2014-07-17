@@ -102,7 +102,7 @@
     <Compile Include="Core\Convert\AvatarConvert.cs" />
     <Compile Include="Core\HttpHelper.cs" />
     <Compile Include="Core\Model\Post.cs" />
-    <Compile Include="Core\Model\PostList.cs" />
+    <Compile Include="Core\Model\Menu.cs" />
     <Compile Include="Core\NeihanApi.cs" />
     <Compile Include="Core\ParseDataUtils.cs" />
     <Compile Include="MainPage.xaml.cs">

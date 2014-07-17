@@ -32,17 +32,33 @@ namespace neihanshe
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        public ObservableCollection<Post> Posts { get; set; }
+
+        #region 初始化信息
+
+        public ObservableCollection<Post> IndexPosts { get; set; }
+        public ObservableCollection<Post> HotPosts { get; set; }
+        public ObservableCollection<Post> NewPosts { get; set; }
+
+        private Menu _category = NeihanApi.GetDefaultMenu();   // 当前目录
+        private int _page = 1; // 当前页数
+        private HyperlinkButton _currentHyperlinkButton;
+        #endregion
 
 
         public MainPage()
         {
-            Posts = new ObservableCollection<Post>();
+            IndexPosts = new ObservableCollection<Post>();
+            HotPosts = new ObservableCollection<Post>();
+            NewPosts = new ObservableCollection<Post>();
             this.InitializeComponent();
 
             AppHelper.InitStatusBar();
-
             App.AppWidth = Window.Current.Bounds.Width - 50;
+
+            IndexPostListView.DataContext = this;
+            HotPostListView.DataContext = this;
+            NewPostListView.DataContext = this;
+
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -126,23 +142,58 @@ namespace neihanshe
         private async void LoadPostData()
         {
             AppHelper.ShowMessage("正在加载数据......");
+
             HttpHelper helper = new HttpHelper(App.HttpClient);
-            string content = await helper.GetHttpString(new Uri(NeihanApi.URL));
-            ParseDataUtils.CopyListToObservableCollection(ParseDataUtils.ParsePost(content), Posts);
-            FooterGrid.Visibility = Visibility.Visible;
+            string content = await helper.GetHttpString(new Uri(NeihanApi.GetCurrentUrl(_category.Name, _page)));
+            ParseDataUtils.CopyListToObservableCollection(ParseDataUtils.ParsePost(content), GetCurrentPosts());
+            Border border = _currentHyperlinkButton.Parent as Border;
+            if (border != null) border.Visibility = Visibility;
             AppHelper.InitStatusBar();
         }
+
+        private ObservableCollection<Post> GetCurrentPosts()
+        {
+            switch (DataPivot.SelectedIndex)
+            {
+                case 0:
+                {
+                    _category = NeihanApi.GetMenus()[0];
+                    return IndexPosts;
+                }
+                case 1:
+                {
+                    _category = NeihanApi.GetMenus()[1];
+                    return HotPosts;
+                }
+                case 2:
+                {
+                    _category = NeihanApi.GetMenus()[2];
+                    return NewPosts;
+                }
+                default:
+                {
+                    _category = NeihanApi.GetMenus()[0];
+                    return IndexPosts;
+                }
+            }
+        }
         #endregion
-        private void AcceptAppBarButton_OnClick(object sender, RoutedEventArgs e)
+
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            _currentHyperlinkButton = IndexNextPageButton;
+            _currentHyperlinkButton.Click += CurrentHyperlinkButtonOnClick;
+        }
+
+        private void CurrentHyperlinkButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
             
         }
 
-        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadPostData();
+            if (GetCurrentPosts().Count <= 0)   // 没有数据才加载
+                LoadPostData();
         }
-
-       
     }
 }
