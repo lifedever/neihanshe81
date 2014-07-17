@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+      *********    请勿修改此文件     *********
+      此文件由设计工具再生成。更改
+      此文件可能会导致错误。
+-->
+<xs:schema xmlns:blend="http://schemas.microsoft.com/expression/blend/2008" xmlns:tns="Blend.SampleData.PostsDataSource" targetNamespace="Blend.SampleData.PostsDataSource" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PostsDataSource" type="tns:PostsDataSource" />
+  <xs:complexType name="PostsDataSource">
+    <xs:sequence>
+      <xs:element name="Posts" type="tns:Posts" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Posts">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="PostsItem" type="tns:PostsItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PostsItem">
+    <xs:attribute name="Id" type="xs:string" />
+    <xs:attribute blend:FormatParameters="5" name="Uid" type="xs:double" />
+    <xs:attribute blend:FormatParameters="2,8" name="UserInfo" type="xs:string" />
+    <xs:attribute name="Title" type="xs:string" />
+    <xs:attribute name="PicH" type="xs:string" />
+    <xs:attribute blend:Format="Lorem ipsum" blend:FormatParameters="4,8" name="PicUrl" type="xs:string" />
+    <xs:attribute blend:FormatParameters="3" name="Up" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="Dn" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="Cmt" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="QNum" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="TNum" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="SNum" type="xs:double" />
+    <xs:attribute blend:FormatParameters="3" name="RNum" type="xs:double" />
+  </xs:complexType>
+</xs:schema>

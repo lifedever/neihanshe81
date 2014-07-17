@@ -1,0 +1,19 @@
+﻿<!--
+      *********    请勿修改此文件     *********
+      此文件由设计工具再生成。更改
+      此文件可能会导致错误。
+-->
+<SampleData:PostsDataSource xmlns:SampleData="using:Blend.SampleData.PostsDataSource" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <SampleData:PostsDataSource.Posts>
+    <SampleData:PostsItem Id="100003" Uid="94428" UserInfo="Aliquam cras" Title="妈妈再也不用担心我淋雨啦" PicH="Aliquam nam maecenas cras" PicUrl="http://t1.qpic.cn/mblogpic/73a014007512c768954e/460.jpg" Up="474" Dn="885" Cmt="881" QNum="831" TNum="457" SNum="533" RNum="707" />
+    <SampleData:PostsItem Id="100004" Uid="75906" UserInfo="Aenean" Title="你们帮我看看哪里不对…原来这就是内幕～" PicH="Sed praesent class integer" PicUrl="http://t1.qpic.cn/mblogpic/8e5299829e3c8f8248d4/460.jpg" Up="309" Dn="170" Cmt="599" QNum="583" TNum="128" SNum="898" RNum="391" />
+    <SampleData:PostsItem Id="100005" Uid="26061" UserInfo="Mauris" Title="Mauris praesent integer" PicH="Curae aenean" PicUrl="http://t1.qpic.cn/mblogpic/e56665eb63f6b2d203a4/460.jpg" Up="606" Dn="135" Cmt="512" QNum="683" TNum="613" SNum="731" RNum="584" />
+    <SampleData:PostsItem Id="100006" Uid="25704" UserInfo="Nam" Title="Nullam accumsan dis quisque" PicH="Quisque duis" PicUrl="http://t1.qpic.cn/mblogpic/c786df43dc7bcee5decc/460.jpg" Up="159" Dn="313" Cmt="766" QNum="105" TNum="776" SNum="103" RNum="387" />
+    <SampleData:PostsItem Id="100007" Uid="15579" UserInfo="Class" Title="Bibendum est duis" PicH="Accumsan vivamus" PicUrl="http://t1.qpic.cn/mblogpic/5dd06e85a4993f505706/460.jpg" Up="547" Dn="348" Cmt="697" QNum="887" TNum="979" SNum="355" RNum="127" />
+    <SampleData:PostsItem Id="100002" Uid="74355" UserInfo="Maecenas" Title="Vivamus nunc aliquam" PicH="Donec mauris nunc" PicUrl="http://app.qpic.cn/mblogpic/a1d7907f422fdd036c4a/460.jpg" Up="670" Dn="788" Cmt="510" QNum="739" TNum="271" SNum="625" RNum="210" />
+    <SampleData:PostsItem Id="100008" Uid="77307" UserInfo="Curae praesent" Title="Curae aliquet aptent" PicH="Nullam aptent aliquam" PicUrl="http://app.qpic.cn/mblogpic/a1d7907f422fdd036c4a/460.jpg" Up="537" Dn="556" Cmt="688" QNum="542" TNum="977" SNum="754" RNum="637" />
+    <SampleData:PostsItem Id="100009" Uid="48049" UserInfo="Accumsan bibendum" Title="Dictumst eleifend amet ante" PicH="Aliquet auctor" PicUrl="http://t1.qpic.cn/mblogpic/e7c2c872d686da4522e4/460.jpg" Up="804" Dn="689" Cmt="361" QNum="977" TNum="792" SNum="595" RNum="540" />
+    <SampleData:PostsItem Id="100010" Uid="75207" UserInfo="Donec" Title="Arcu donec" PicH="Etiam dis fusce congue" PicUrl="http://t1.qpic.cn/mblogpic/572fd488aa512e387c80/460.jpg" Up="740" Dn="148" Cmt="628" QNum="164" TNum="519" SNum="444" RNum="936" />
+    <SampleData:PostsItem Id="100011" Uid="46532" UserInfo="Integer sed" Title="Etiam auctor congue" PicH="Est bibendum" PicUrl="http://t1.qpic.cn/mblogpic/b9e1d7e553da2f33e48a/460.jpg" Up="352" Dn="797" Cmt="644" QNum="819" TNum="864" SNum="920" RNum="673" />
+  </SampleData:PostsDataSource.Posts>
+</SampleData:PostsDataSource>

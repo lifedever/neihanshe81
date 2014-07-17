@@ -1,0 +1,70 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:neihanshe"
+    xmlns:convert="using:neihanshe.Core.Convert"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Class="neihanshe.MainPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <convert:AvatarConvert x:Key="AvatarConvert"></convert:AvatarConvert>
+        
+        <DataTemplate x:Key="PostsItemTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Ellipse Width="30" Height="30">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding Uid, Converter={StaticResource AvatarConvert}}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
+                </StackPanel>
+                <TextBlock Text="{Binding Title}" Grid.Row="1" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
+                <Image Source="{Binding PicUrl}" Grid.Row="2"></Image>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="设置"/>
+                <AppBarButton Label="关于"/>
+            </CommandBar.SecondaryCommands>
+            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" Click="AcceptAppBarButton_OnClick"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource PostsDataSource}}">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0" Text="{StaticResource AppName}"/>
+            <TextBlock Text="首页" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: 应将内容放入以下网格-->
+        <Grid Grid.Row="1" x:Name="ContentRoot">
+            <ListView IsHitTestVisible="False" x:Name="PostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding Posts}" Margin="10 0"/>
+        </Grid>
+    </Grid>
+</Page>
