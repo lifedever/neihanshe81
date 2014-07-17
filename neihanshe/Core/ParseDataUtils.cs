@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace neihanshe.Core
         /// 获取数据工具类
         /// </summary>
         /// <param name="json">需要解析的json数据</param>
-        public static List<Post> Parse(string json)
+        public static List<Post> ParsePost(string json)
         {
             List<Post> posts = new List<Post>();
             if (json.Contains("[\"error\"]"))       // 服务器返回错误信息
@@ -30,16 +31,24 @@ namespace neihanshe.Core
                 Title = itemObject["title"].GetString(),
                 PicH = itemObject["pic_h"].GetString(),
                 PicUrl = itemObject["pic_url"].GetString(),
-                Up = int.Parse(itemObject["up"].ToString()),
-                Dn = int.Parse(itemObject["dn"].GetString()),
-                Cmt = int.Parse(itemObject["cmt"].GetString()),
-                QNum = int.Parse(itemObject["q_num"].GetString()),
-                TNum = int.Parse(itemObject["t_num"].GetString()),
-                SNum = int.Parse(itemObject["s_num"].GetString()),
-                RNum = int.Parse(itemObject["r_num"].GetString())
+                Up = itemObject["up"].GetString(),
+                Dn = itemObject["dn"].GetString(),
+                Cmt = itemObject["cmt"].GetString(),
+                QNum = itemObject["q_num"].GetString(),
+                TNum = itemObject["t_num"].GetString(),
+                SNum = itemObject["s_num"].GetString(),
+                RNum = itemObject["r_num"].GetString()
             }));
 
             return posts;
+        }
+
+        public static void CopyListToObservableCollection(List<Post> posts, ObservableCollection<Post> observable)
+        {
+            foreach (var post in posts)
+            {
+                observable.Add(post);
+            }            
         }
     }
 }

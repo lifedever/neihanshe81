@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Data.Html;
 
 namespace neihanshe.Core.Model
 {
@@ -13,17 +14,30 @@ namespace neihanshe.Core.Model
     {
         public string Id { get; set; }
         public string Uid { get; set; }
-        public string UserInfo { get; set; }
+        private string _userInfo;
         public string Title { get; set; }
         public string PicH { get; set; }
         public string PicUrl { get; set; }
-        public int Up { get; set; }
-        public int Dn { get; set; }
-        public int Cmt { get; set; }
-        public int QNum { get; set; }
-        public int TNum { get; set; }
-        public int SNum { get; set; }
-        public int RNum { get; set; }
+        public string Up { get; set; }
+        public string Dn { get; set; }
+        public string Cmt { get; set; }
+        public string QNum { get; set; }
+        public string TNum { get; set; }
+        public string SNum { get; set; }
+        public string RNum { get; set; }
 
+        public string UserInfo
+        {
+            get { return _userInfo; }
+            set
+            {
+                if (value.Contains("</a>"))
+                {
+                    value = HtmlUtilities.ConvertToText(value);
+                    
+                }
+                _userInfo = value;
+            }
+        }
     }
 }

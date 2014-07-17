@@ -7,35 +7,69 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="neihanshe.MainPage"
     mc:Ignorable="d"
+    Loaded="MainPage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <convert:AvatarConvert x:Key="AvatarConvert"></convert:AvatarConvert>
+        <Style TargetType="Image" x:Key="VoteImageStyle">
+            <Setter Property="Width" Value="24" />
+        </Style>
+        
+        <Style TargetType="TextBlock" x:Key="VoteTextStyle">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="Margin" Value="8 0 0 0" />
+        </Style>
         
         <DataTemplate x:Key="PostsItemTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Ellipse Width="30" Height="30">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding Uid, Converter={StaticResource AvatarConvert}}" />
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
-                </StackPanel>
-                <TextBlock Text="{Binding Title}" Grid.Row="1" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
-                <Image Source="{Binding PicUrl}" Grid.Row="2"></Image>
-            </Grid>
+            <Border Background="White" Margin="10 0 10 20" CornerRadius="8">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Ellipse Width="30" Height="30">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding Uid, Converter={StaticResource AvatarConvert}}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
+                    <Image MaxWidth="2000" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2"></Image>
+                    <Grid Grid.Row="3">
+                        <Grid VerticalAlignment="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Name="UpPanel">
+                                    <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
+                                    <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="20 0 0 0">
+                                    <Image Source="Assets/Images/cry.png" Style="{StaticResource VoteImageStyle}"/>
+                                    <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>
+                                <TextBlock Text="{Binding Cmt}" Style="{StaticResource VoteTextStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
         </DataTemplate>
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <CommandBar>
-            <CommandBar.SecondaryCommands>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.SecondaryCommands >
                 <AppBarButton Label="设置"/>
                 <AppBarButton Label="关于"/>
             </CommandBar.SecondaryCommands>
@@ -43,7 +77,9 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource PostsDataSource}}">
+    <Grid x:Name="LayoutRoot" 
+          Background="{StaticResource AppSolidColorBrush}"
+          DataContext="{Binding Source={StaticResource PostsDataSource}}">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -58,13 +94,14 @@
 
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0" Text="{StaticResource AppName}"/>
             <TextBlock Text="首页" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot">
-            <ListView IsHitTestVisible="False" x:Name="PostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding Posts}" Margin="10 0"/>
+            <ListView x:Name="PostListView"
+                      ItemTemplate="{StaticResource PostsItemTemplate}" 
+                      ItemsSource="{Binding Posts}"/>
         </Grid>
     </Grid>
 </Page>

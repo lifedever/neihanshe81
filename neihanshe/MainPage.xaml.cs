@@ -34,6 +34,7 @@ namespace neihanshe
         public ObservableCollection<Post> Posts { get; set; }
         public MainPage()
         {
+            Posts = new ObservableCollection<Post>();
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
@@ -114,12 +115,25 @@ namespace neihanshe
 
         #endregion
 
-        private async void AcceptAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        #region 工具方法
+
+        private async void LoadPostData()
         {
             HttpHelper helper = new HttpHelper(App.HttpClient);
             string content = await helper.GetHttpString(new Uri(NeihanApi.URL));
-            Posts = new ObservableCollection<Post>(ParseDataUtils.Parse(content));
-            Debug.WriteLine(content);
+            ParseDataUtils.CopyListToObservableCollection(ParseDataUtils.ParsePost(content), Posts);
         }
+        #endregion
+        private void AcceptAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            LoadPostData();
+        }
+
+       
     }
 }
