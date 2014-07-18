@@ -14,7 +14,7 @@ namespace neihanshe.Core
         /// <summary>
         /// 初始化状态栏
         /// </summary>
-        public static void InitStatusBar()
+        public static void ShowStatusBar()
         {
             var statusBar = StatusBar.GetForCurrentView();
             statusBar.BackgroundColor = Colors.DodgerBlue;
@@ -28,14 +28,21 @@ namespace neihanshe.Core
         /// 显示进度信息
         /// </summary>
         /// <param name="message"></param>
-        public static void ShowMessage(string message)
+        public static void ShowProgressMessage(string message)
         {
             var statusBar = StatusBar.GetForCurrentView();
             statusBar.BackgroundColor = Colors.DodgerBlue;
             statusBar.BackgroundOpacity = 0.7;
             statusBar.ProgressIndicator.Text = message;
-            statusBar.ProgressIndicator.ProgressValue = 1;
+            statusBar.ProgressIndicator.ProgressValue = null;
             statusBar.ProgressIndicator.ShowAsync();
         }
+
+        public static void HideStatusBar()
+        {
+            var statusBar = StatusBar.GetForCurrentView();
+            statusBar.HideAsync();
+        }
+
     }
 }

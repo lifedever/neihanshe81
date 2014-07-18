@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,11 @@ namespace neihanshe.Core
         /// <param name="json">需要解析的json数据</param>
         public static List<Post> ParsePost(string json)
         {
+            Debug.WriteLine(json);
             List<Post> posts = new List<Post>();
             if (json.Contains("[\"error\"]"))       // 服务器返回错误信息
+                return posts;
+            if (string.IsNullOrWhiteSpace(json))
                 return posts;
             json = json.Remove(1, json.IndexOf(",", StringComparison.Ordinal));
             JsonArray jsonArray = JsonArray.Parse(json);

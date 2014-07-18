@@ -81,6 +81,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="FlyoutTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,8 +107,12 @@
     <Compile Include="Core\HttpHelper.cs" />
     <Compile Include="Core\Model\Post.cs" />
     <Compile Include="Core\Model\Menu.cs" />
+    <Compile Include="Core\Model\Subject.cs" />
     <Compile Include="Core\NeihanApi.cs" />
     <Compile Include="Core\ParseDataUtils.cs" />
+    <Compile Include="FlyoutTip.xaml.cs">
+      <DependentUpon>FlyoutTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

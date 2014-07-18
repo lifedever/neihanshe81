@@ -66,7 +66,6 @@
             </Border>
         </DataTemplate>
     </Page.Resources>
-
     <Grid x:Name="LayoutRoot" 
           Background="{StaticResource AppSolidColorBrush}"
           DataContext="{Binding Source={StaticResource PostsDataSource}}">
@@ -84,7 +83,7 @@
                     <ListView x:Name="IndexPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding IndexPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="IndexFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
-                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="IndexNextPageButton">点击加载下一页</HyperlinkButton>
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="IndexNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
                             </Border>
                         </ListView.Footer>
                     </ListView>
@@ -96,7 +95,7 @@
                     <ListView x:Name="HotPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding HotPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="HotFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
-                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="HotNextPageButton">点击加载下一页</HyperlinkButton>
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="HotNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
                             </Border>
                         </ListView.Footer>
                     </ListView>
@@ -108,22 +107,23 @@
                     <ListView x:Name="NewPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding NewPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="NewFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
-                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NewNextPageButton">点击加载下一页</HyperlinkButton>
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NewNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
                             </Border>
                         </ListView.Footer>
                     </ListView>
                 </Grid>
             </PivotItem>
         </Pivot>
+        <local:FlyoutTip x:Name="MyFlyoutTip"></local:FlyoutTip>
     </Grid>
-
+    
     <Page.BottomAppBar>
-        <CommandBar ClosedDisplayMode="Minimal">
+        <CommandBar>
             <CommandBar.SecondaryCommands >
                 <AppBarButton Label="设置"/>
                 <AppBarButton Label="关于"/>
             </CommandBar.SecondaryCommands>
-            <AppBarButton Icon="Accept" x:Name="AcceptAppBarButton" />
+            <AppBarButton Icon="Refresh" x:Name="RefreshAppBarButton" Click="RefreshAppBarButton_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

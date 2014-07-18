@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Windows.Storage.Search;
 using Windows.UI;
 using neihanshe.Common;
 using System;
@@ -39,20 +40,21 @@ namespace neihanshe
         public ObservableCollection<Post> HotPosts { get; set; }
         public ObservableCollection<Post> NewPosts { get; set; }
 
-        private Menu _category = NeihanApi.GetDefaultMenu();   // 当前目录
-        private int _page = 1; // 当前页数
-        private HyperlinkButton _currentHyperlinkButton;
+        private Subject _indexSubject = new Subject(){Page = 1};
+        private Subject _hotSubject = new Subject() { Page = 1 };
+        private Subject _newSubject = new Subject() { Page = 1 };
+
         #endregion
 
 
         public MainPage()
         {
-            IndexPosts = new ObservableCollection<Post>();
-            HotPosts = new ObservableCollection<Post>();
-            NewPosts = new ObservableCollection<Post>();
+
+            InitParams();
+
             this.InitializeComponent();
 
-            AppHelper.InitStatusBar();
+            AppHelper.ShowStatusBar();
             App.AppWidth = Window.Current.Bounds.Width - 50;
 
             IndexPostListView.DataContext = this;
@@ -65,7 +67,17 @@ namespace neihanshe
 
         }
 
+        private void InitParams()
+        {
+            // 初始化集合
+            IndexPosts = new ObservableCollection<Post>();
+            HotPosts = new ObservableCollection<Post>();
+            NewPosts = new ObservableCollection<Post>();
 
+           
+        }
+
+        #region 一些与逻辑无关的代码
         /// <summary>
         /// 获取与此 <see cref="Page"/> 关联的 <see cref="NavigationHelper"/>。
         /// </summary>
@@ -136,64 +148,115 @@ namespace neihanshe
         }
 
         #endregion
+        #endregion
 
         #region 工具方法
-
-        private async void LoadPostData()
+        private async void LoadPostData(Subject subject)
         {
-            AppHelper.ShowMessage("正在加载数据......");
+            try
+            {
+                AppHelper.ShowProgressMessage("正在加载数据......");
 
-            HttpHelper helper = new HttpHelper(App.HttpClient);
-            string content = await helper.GetHttpString(new Uri(NeihanApi.GetCurrentUrl(_category.Name, _page)));
-            ParseDataUtils.CopyListToObservableCollection(ParseDataUtils.ParsePost(content), GetCurrentPosts());
-            Border border = _currentHyperlinkButton.Parent as Border;
-            if (border != null) border.Visibility = Visibility;
-            AppHelper.InitStatusBar();
+                HttpHelper helper = new HttpHelper(App.HttpClient);
+                string content = await helper.GetHttpString(new Uri(NeihanApi.GetCurrentUrl(subject.Menu.Name, subject.Page)));
+
+                List<Post> posts = ParseDataUtils.ParsePost(content);
+                if (posts.Count > 0)
+                {
+                    ParseDataUtils.CopyListToObservableCollection(posts, subject.Posts);
+                }
+                else
+                {
+                    ShowTipMessage("未获取到数据，请稍后重试！");
+                }
+                AppHelper.ShowStatusBar();
+
+                subject.CurrentGrid.Visibility = Visibility.Visible;
+            }
+            catch (Exception e)
+            {
+                ShowTipMessage("数据加载失败，请稍后重试！");
+            }
+
         }
 
-        private ObservableCollection<Post> GetCurrentPosts()
+        private Subject GetCurrentSubject()
         {
             switch (DataPivot.SelectedIndex)
             {
                 case 0:
-                {
-                    _category = NeihanApi.GetMenus()[0];
-                    return IndexPosts;
-                }
+                    {
+                        _indexSubject.Menu = NeihanApi.GetMenus()[0];
+                        _indexSubject.Posts = IndexPosts;
+                        _indexSubject.CurrentGrid = IndexFooterGrid;
+                        return _indexSubject;
+                    }
                 case 1:
-                {
-                    _category = NeihanApi.GetMenus()[1];
-                    return HotPosts;
-                }
+                    {
+                        _hotSubject.Menu = NeihanApi.GetMenus()[1];
+                        _hotSubject.Posts = HotPosts;
+                        _hotSubject.CurrentGrid = HotFooterGrid;
+                        return _hotSubject;
+                    }
                 case 2:
-                {
-                    _category = NeihanApi.GetMenus()[2];
-                    return NewPosts;
-                }
+                    {
+                        _newSubject.Menu = NeihanApi.GetMenus()[2];
+                        _newSubject.Posts = NewPosts;
+                        _newSubject.CurrentGrid = NewFooterGrid;
+                        return _newSubject;
+                    }
                 default:
-                {
-                    _category = NeihanApi.GetMenus()[0];
-                    return IndexPosts;
-                }
+                    {
+                        _indexSubject.Menu = NeihanApi.GetMenus()[0];
+                        _indexSubject.Posts = IndexPosts;
+                        _indexSubject.CurrentGrid = IndexFooterGrid;
+                        return _indexSubject;
+                    }
             }
         }
+
+        /// <summary>
+        /// 显示弹出提示
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowTipMessage(string message)
+        {
+            AppHelper.HideStatusBar();
+            MyFlyoutTip.Show(this, message);
+            AppHelper.ShowStatusBar();
+        }
+
         #endregion
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            _currentHyperlinkButton = IndexNextPageButton;
-            _currentHyperlinkButton.Click += CurrentHyperlinkButtonOnClick;
         }
 
+        /// <summary>
+        /// 点击下一页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="routedEventArgs"></param>
         private void CurrentHyperlinkButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            
+            var subject = GetCurrentSubject();
+            subject.Page ++;
+            LoadPostData(subject);
         }
 
         private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (GetCurrentPosts().Count <= 0)   // 没有数据才加载
-                LoadPostData();
+            var subject = GetCurrentSubject();
+            if (subject.Posts.Count <= 0)   // 没有数据才加载
+                LoadPostData(subject);
+        }
+
+        private void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var subject = GetCurrentSubject();
+            subject.Page = 1;
+            subject.Posts.Clear();
+            LoadPostData(subject);
         }
     }
 }
