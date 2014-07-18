@@ -32,10 +32,15 @@ namespace neihanshe
         /// <param name="millisecond"></param>
         public async void Show(FrameworkElement element, string message , int millisecond)
         {
-            MessageTextBlock.Text = message;
-            MyFlyout.ShowAt(element);
+            ShowWithoutClose(element, message);
             await Task.Delay(millisecond);
             MyFlyout.Hide();
+        }
+
+        public void ShowWithoutClose(FrameworkElement element, string message)
+        {
+            MessageTextBlock.Text = message;
+            MyFlyout.ShowAt(element);
         }
 
         /// <summary>

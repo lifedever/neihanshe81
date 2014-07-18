@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="neihanshe.MainPage"
     mc:Ignorable="d"
-    Loaded="MainPage_OnLoaded"
-    >
+    Loaded="MainPage_OnLoaded">
+    
     <Page.Resources>
         <convert:AvatarConvert x:Key="AvatarConvert"></convert:AvatarConvert>
         <Style TargetType="Image" x:Key="VoteImageStyle">
@@ -18,7 +18,7 @@
         <Style TargetType="TextBlock" x:Key="VoteTextStyle">
             <Setter Property="FontSize" Value="18" />
             <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="Margin" Value="8 0 0 0" />
+            <Setter Property="Margin" Value="8 0 0 5" />
         </Style>
         
         <DataTemplate x:Key="PostsItemTemplate">
@@ -39,7 +39,7 @@
                         <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
-                    <Image MaxWidth="2000" Width="{Binding Width}" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2"></Image>
+                    <Image MaxWidth="2000" Width="{Binding Width}" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2" ></Image>
                     <Grid Grid.Row="3">
                         <Grid VerticalAlignment="Bottom">
                             <Grid.ColumnDefinitions>
@@ -56,7 +56,7 @@
                                     <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}" Tapped="CmtPanel_OnTapped">
                                 <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>
                                 <TextBlock Text="{Binding Cmt}" Style="{StaticResource VoteTextStyle}"/>
                             </StackPanel>
@@ -75,7 +75,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
 
-        <!--TODO: 应将内容放入以下网格-->
+        <!--数据列表开发-->
         <Pivot SelectionChanged="Pivot_OnSelectionChanged" Name="DataPivot">
 
             <PivotItem Header="首页">

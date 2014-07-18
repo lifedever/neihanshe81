@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Storage.Search;
 using Windows.UI;
 using neihanshe.Common;
@@ -150,7 +151,6 @@ namespace neihanshe
         #endregion
         #endregion
 
-        #region 工具方法
         private async void LoadPostData(Subject subject)
         {
             try
@@ -170,8 +170,8 @@ namespace neihanshe
                     ShowTipMessage("未获取到数据，请稍后重试！");
                 }
                 AppHelper.ShowStatusBar();
-
                 subject.CurrentGrid.Visibility = Visibility.Visible;
+                ShowTipMessage(string.Format("已成功加载{0}条数据，图片加载可能有些慢，请小伙伴耐心等待！", subject.Posts.Count));
             }
             catch (Exception e)
             {
@@ -180,6 +180,7 @@ namespace neihanshe
 
         }
 
+        #region 工具方法
         private Subject GetCurrentSubject()
         {
             switch (DataPivot.SelectedIndex)
@@ -189,6 +190,7 @@ namespace neihanshe
                         _indexSubject.Menu = NeihanApi.GetMenus()[0];
                         _indexSubject.Posts = IndexPosts;
                         _indexSubject.CurrentGrid = IndexFooterGrid;
+                        _indexSubject.ListView = IndexPostListView;
                         return _indexSubject;
                     }
                 case 1:
@@ -196,6 +198,7 @@ namespace neihanshe
                         _hotSubject.Menu = NeihanApi.GetMenus()[1];
                         _hotSubject.Posts = HotPosts;
                         _hotSubject.CurrentGrid = HotFooterGrid;
+                        _hotSubject.ListView = HotPostListView;
                         return _hotSubject;
                     }
                 case 2:
@@ -203,6 +206,7 @@ namespace neihanshe
                         _newSubject.Menu = NeihanApi.GetMenus()[2];
                         _newSubject.Posts = NewPosts;
                         _newSubject.CurrentGrid = NewFooterGrid;
+                        _newSubject.ListView = NewPostListView;
                         return _newSubject;
                     }
                 default:
@@ -221,9 +225,7 @@ namespace neihanshe
         /// <param name="message"></param>
         private void ShowTipMessage(string message)
         {
-            AppHelper.HideStatusBar();
-            MyFlyoutTip.Show(this, message);
-            AppHelper.ShowStatusBar();
+            MyFlyoutTip.Show(this, message, 3000);
         }
 
         #endregion
@@ -257,6 +259,19 @@ namespace neihanshe
             subject.Page = 1;
             subject.Posts.Clear();
             LoadPostData(subject);
+        }
+
+        /// <summary>
+        /// 点击评论
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CmtPanel_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            var subject = GetCurrentSubject();
+            subject.ListView.SelectedItem = null;
+            var cmtPanel = sender as StackPanel;
+
         }
     }
 }
