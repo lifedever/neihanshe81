@@ -1,4 +1,8 @@
-﻿using neihanshe.Common;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.Web.Http;
+using neihanshe.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -101,6 +105,7 @@ namespace neihanshe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            LogoStoryboard.Begin();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -109,5 +114,56 @@ namespace neihanshe
         }
 
         #endregion
+
+        private void LogoEllipse_OnManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            LogoTransform.X = e.Cumulative.Translation.X;
+            LogoTransform.Y = e.Cumulative.Translation.Y;
+        }
+
+        private void LogoEllipse_OnManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            LogoTransform.X = 0;
+            LogoTransform.Y = 0;
+        }
+
+        private async void LoginAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            bool status = await Login(UsernameTextBox.Text, PasswordBox.Password);
+            if (status)
+            {
+                InfoTextBlock.Text = "登录成功！";
+            }
+            else
+            {
+                InfoTextBlock.Text = "登录失败！";
+            }
+        }
+
+        private async Task<bool> Login(string username, string password)
+        {
+            // This is the postdata
+            var postData = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("user", username),
+                new KeyValuePair<string, string>("pass", password)
+            };
+
+            IHttpContent content = new HttpFormUrlEncodedContent(postData);
+
+            HttpResponseMessage message = await App.HttpClient.PostAsync(new Uri("http://neihanshe.cn/login", UriKind.Absolute), content);
+            var contentType = message.Content.Headers.ContentType;
+            if (contentType != null && string.IsNullOrEmpty(contentType.CharSet))
+            {
+                contentType.CharSet = "utf-8";
+            }
+            if (message.Content.ToString().Contains("<li id=\"error_info\">账号或密码不正确！</li>"))
+            {
+                return false;
+            }
+            return true;
+            
+        }
+
     }
 }

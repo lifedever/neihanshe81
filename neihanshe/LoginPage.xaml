@@ -196,40 +196,46 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-	</Page.Resources>
+        
+        <!-- 动画 -->
+        <Storyboard x:Name="LogoStoryboard">
+            <DoubleAnimation From="-180" To="0" Duration="00:00:3" 
+                Storyboard.TargetName="LogoTransform" 
+                Storyboard.TargetProperty="Y">
+                <DoubleAnimation.EasingFunction>
+                    <BounceEase Bounces="4" Bounciness="2" EasingMode="EaseOut"></BounceEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
-
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition />    
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Ellipse Grid.Row="0" Width="100" Height="100" VerticalAlignment="Bottom" StrokeThickness="3">
-            <Ellipse.Stroke>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </Ellipse.Stroke>
-            <Ellipse.Fill>
-                <ImageBrush ImageSource="http://errorpage.b0.upaiyun.com/nhs-avatar-404"></ImageBrush>
-            </Ellipse.Fill>
-        </Ellipse>
-        <StackPanel Grid.Row="1" Margin="50 10" Background="White">
-            <TextBox Height="45"  Margin="0" PlaceholderText="用户名" BorderBrush="DarkGray" BorderThickness="2 2 2 1" Background="White" FontSize="20" Style="{StaticResource TextBoxStyle1}" VerticalAlignment="Center"/>
-            <PasswordBox Height="45" Margin="0" PlaceholderText="密码" BorderBrush="DarkGray" BorderThickness="2 1 2 2" Background="White" FontSize="20" Style="{StaticResource PasswordBoxStyle1}" VerticalAlignment="Center"/>
+        <StackPanel>
+            <Ellipse Margin="0 180 0 0" Name="LogoEllipse" ManipulationMode="All" ManipulationCompleted="LogoEllipse_OnManipulationCompleted" ManipulationDelta="LogoEllipse_OnManipulationDelta" Grid.Row="0" Width="100" Height="100" VerticalAlignment="Bottom" StrokeThickness="3">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="Assets/nhs-avatar-404.jpg" />
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="LogoTransform"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <StackPanel Grid.Row="1" Margin="50 10" Background="White">
+                <TextBox Height="45"  Margin="0" PlaceholderText="用户名" Name="UsernameTextBox" BorderBrush="DarkGray" BorderThickness="2 2 2 1" Background="White" FontSize="20" Style="{StaticResource TextBoxStyle1}" VerticalAlignment="Center"/>
+                <PasswordBox Height="45" Margin="0" PlaceholderText="密码" Name="PasswordBox" BorderBrush="DarkGray" BorderThickness="2 1 2 2" Background="White" FontSize="20" Style="{StaticResource PasswordBoxStyle1}" VerticalAlignment="Center"/>
+            </StackPanel>
+            <CheckBox Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" BorderThickness="2.5" IsChecked="True">记住密码</CheckBox>
+            <TextBlock Name="InfoTextBlock" Foreground="Red" HorizontalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}"></TextBlock>
         </StackPanel>
-        <CheckBox Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" BorderThickness="2.5" IsChecked="True"> 记住密码</CheckBox>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Accept" Label="登录" Name="LoginAppBarButton"></AppBarButton>
+            <AppBarButton Icon="Accept" Label="登录" Name="LoginAppBarButton" Click="LoginAppBarButton_OnClick"></AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

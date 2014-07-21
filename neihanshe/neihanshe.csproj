@@ -152,6 +152,7 @@
     <Content Include="Assets\Images\cry.png" />
     <Content Include="Assets\Images\smile.png" />
     <Content Include="Assets\Logo.scale-240.png" />
+    <Content Include="Assets\nhs-avatar-404.jpg" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
     <Content Include="Assets\Square71x71Logo.scale-240.png" />

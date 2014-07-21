@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -21,6 +20,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // “空白应用程序”模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
+using Windows.Web.Http;
 
 namespace neihanshe
 {
@@ -41,7 +41,7 @@ namespace neihanshe
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
             HttpClient = new HttpClient();
-            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+            //HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             
 
         }
@@ -53,7 +53,10 @@ namespace neihanshe
             {
                 return;
             }
-
+            foreach (var stack in frame.BackStack)
+            {
+                Debug.WriteLine(stack.SourcePageType);
+            }
             if (frame.CanGoBack)
             {
                 frame.GoBack();
