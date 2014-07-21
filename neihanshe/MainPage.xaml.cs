@@ -149,6 +149,11 @@ namespace neihanshe
         {
             this.navigationHelper.OnNavigatedTo(e);
             AppHelper.ShowStatusBar();
+
+            string username = SettingUtils.Get("username") as string;
+            if (username != null)
+                UserTextBlock.Text = username;
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -164,6 +169,8 @@ namespace neihanshe
             try
             {
                 AppHelper.ShowProgressMessage("正在加载数据......");
+                subject.CurrentGrid.Visibility = Visibility.Collapsed;
+                LoginAppBarButton.IsEnabled = false;
                 HttpHelper helper = new HttpHelper(App.HttpClient);
                 string content = await helper.GetHttpString(new Uri(NeihanApi.GetCurrentUrl(subject.Menu.Name, subject.Page)));
 
@@ -177,6 +184,7 @@ namespace neihanshe
                     ShowTipMessage("未获取到数据，请稍后重试！");
                 }
                 AppHelper.ShowStatusBar();
+                LoginAppBarButton.IsEnabled = true;
                 subject.CurrentGrid.Visibility = Visibility.Visible;
                 ShowTipMessage(string.Format("已成功加载{0}条数据，图片加载可能有些慢，请小伙伴耐心等待！", subject.Posts.Count));
             }

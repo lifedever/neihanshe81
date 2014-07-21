@@ -122,6 +122,7 @@
     <Compile Include="Core\Model\Subject.cs" />
     <Compile Include="Core\NeihanApi.cs" />
     <Compile Include="Core\ParseDataUtils.cs" />
+    <Compile Include="Core\SettingUtils.cs" />
     <Compile Include="FlyoutTip.xaml.cs">
       <DependentUpon>FlyoutTip.xaml</DependentUpon>
     </Compile>

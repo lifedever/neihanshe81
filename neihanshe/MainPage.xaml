@@ -139,7 +139,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Margin="20 5" VerticalAlignment="Center">
-                <TextBlock Style="{StaticResource BaseTextBlockStyle}">未登录</TextBlock>
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" Name="UserTextBlock">未登录</TextBlock>
             </StackPanel>
             <AppBarButton Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Name="LoginAppBarButton" Click="LoginAppBarButton_OnClick" Icon="Contact">
             </AppBarButton>

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Data.Html;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.Web.Http;
 using neihanshe.Common;
@@ -132,7 +133,12 @@ namespace neihanshe
             bool status = await Login(UsernameTextBox.Text, PasswordBox.Password);
             if (status)
             {
-                InfoTextBlock.Text = "登录成功！";
+                InfoTextBlock.Text = "登录成功，正在解析网络数据......";
+                SettingUtils.Save("loginname", UsernameTextBox.Text);
+                SettingUtils.Save("password", PasswordBox.Password);
+                // 获取登录用户信息
+                parseUserInfoFromHtml();
+                navigationHelper.GoBack();
             }
             else
             {
@@ -140,6 +146,43 @@ namespace neihanshe
             }
         }
 
+        private async void parseUserInfoFromHtml()
+        {
+            HttpResponseMessage message = await App.HttpClient.GetAsync(new Uri("http://neihanshe.cn/set", UriKind.Absolute));
+            var contentType = message.Content.Headers.ContentType;
+            if (contentType != null && string.IsNullOrEmpty(contentType.CharSet))
+            {
+                contentType.CharSet = "utf-8";
+            }
+            string returnHtml = await message.Content.ReadAsStringAsync();
+            using (StringReader sr = new StringReader(returnHtml))
+            {
+                string line;
+                while ((line = sr.ReadLine())!= null)
+                {
+                    if (line.Contains("<label for=\"blog\">账号名称：</label>")) // 用户名
+                    {
+                        string str = line.Substring(line.LastIndexOf("value=", System.StringComparison.Ordinal));
+                        string username = str.Split('\"')[1];
+                        SettingUtils.Save("username", username);
+                    }
+                    if (line.Contains("<div class=\"avatar\">"))    //用户头像
+                    {
+                        string avatar = line.Split('\"')[3];
+                        SettingUtils.Save("avatar", avatar);
+                        break;
+                    }
+                }
+                
+            }
+        }
+
+        /// <summary>
+        /// 模拟登陆
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private async Task<bool> Login(string username, string password)
         {
             // This is the postdata
@@ -162,7 +205,6 @@ namespace neihanshe
                 return false;
             }
             return true;
-            
         }
 
     }
