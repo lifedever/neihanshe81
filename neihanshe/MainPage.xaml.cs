@@ -39,11 +39,15 @@ namespace neihanshe
 
         public ObservableCollection<Post> IndexPosts { get; set; }
         public ObservableCollection<Post> HotPosts { get; set; }
+        public ObservableCollection<Post> CmtHotPosts { get; set; }
         public ObservableCollection<Post> NewPosts { get; set; }
 
         private Subject _indexSubject = new Subject(){Page = 1};
         private Subject _hotSubject = new Subject() { Page = 1 };
+        private Subject _cmtHotSubject = new Subject(){Page = 1};
         private Subject _newSubject = new Subject() { Page = 1 };
+
+        private int _pivotIndex;
 
         #endregion
 
@@ -55,17 +59,20 @@ namespace neihanshe
 
             this.InitializeComponent();
 
-            AppHelper.ShowStatusBar();
+            
             App.AppWidth = Window.Current.Bounds.Width - 50;
 
             IndexPostListView.DataContext = this;
             HotPostListView.DataContext = this;
+            CmtHotContentRoot.DataContext = this;
             NewPostListView.DataContext = this;
 
+            this.NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            _pivotIndex = -1;
         }
 
         private void InitParams()
@@ -74,7 +81,7 @@ namespace neihanshe
             IndexPosts = new ObservableCollection<Post>();
             HotPosts = new ObservableCollection<Post>();
             NewPosts = new ObservableCollection<Post>();
-
+            CmtHotPosts = new ObservableCollection<Post>();
            
         }
 
@@ -141,6 +148,7 @@ namespace neihanshe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            AppHelper.ShowStatusBar();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -156,7 +164,6 @@ namespace neihanshe
             try
             {
                 AppHelper.ShowProgressMessage("正在加载数据......");
-
                 HttpHelper helper = new HttpHelper(App.HttpClient);
                 string content = await helper.GetHttpString(new Uri(NeihanApi.GetCurrentUrl(subject.Menu.Name, subject.Page)));
 
@@ -203,7 +210,15 @@ namespace neihanshe
                     }
                 case 2:
                     {
-                        _newSubject.Menu = NeihanApi.GetMenus()[2];
+                        _cmtHotSubject.Menu = NeihanApi.GetMenus()[2];
+                        _cmtHotSubject.Posts = CmtHotPosts;
+                        _cmtHotSubject.CurrentGrid = CmtHotFooterGrid;
+                        _cmtHotSubject.ListView = CmtHotPostListView;
+                        return _cmtHotSubject;
+                    }
+                case 3:
+                    {
+                        _newSubject.Menu = NeihanApi.GetMenus()[3];
                         _newSubject.Posts = NewPosts;
                         _newSubject.CurrentGrid = NewFooterGrid;
                         _newSubject.ListView = NewPostListView;
@@ -248,9 +263,12 @@ namespace neihanshe
 
         private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var subject = GetCurrentSubject();
-            if (subject.Posts.Count <= 0)   // 没有数据才加载
-                LoadPostData(subject);
+            if (DataPivot.SelectedIndex != _pivotIndex) { 
+                var subject = GetCurrentSubject();
+                if (subject.Posts.Count <= 0)   // 没有数据才加载
+                    LoadPostData(subject);
+                _pivotIndex = DataPivot.SelectedIndex;
+            }
         }
 
         private void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
@@ -261,17 +279,18 @@ namespace neihanshe
             LoadPostData(subject);
         }
 
-        /// <summary>
-        /// 点击评论
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CmtPanel_OnTapped(object sender, TappedRoutedEventArgs e)
+        private void IndexPostListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var subject = GetCurrentSubject();
-            subject.ListView.SelectedItem = null;
-            var cmtPanel = sender as StackPanel;
+            var item = GetCurrentSubject().ListView.SelectedItem;
+            if (item == null)
+                return;
+            GetCurrentSubject().ListView.SelectedItem = null;
+            Frame.Navigate(typeof(PostPage), item);
+        }
 
+        private void LoginAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (LoginPage));
         }
     }
 }

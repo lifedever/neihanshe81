@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Windows.Phone.UI.Input;
-using neihanshe.Common;
+﻿using neihanshe.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,27 +18,25 @@ using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 using neihanshe.Core;
-using neihanshe.Core.Model;
 
 namespace neihanshe
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class PostPage : Page
+    public sealed partial class LoginPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private Post _post;
-        public PostPage()
+
+        public LoginPage()
         {
             this.InitializeComponent();
-            AppHelper.ShowStatusBar();
+            AppHelper.HideStatusBar();
             this.navigationHelper = new NavigationHelper(this);
             this.NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
         }
 
         /// <summary>
@@ -105,10 +101,6 @@ namespace neihanshe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            AppHelper.ShowStatusBar();
-            _post = e.Parameter as Post;
-            ContentRoot.DataContext = _post;
-
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -117,15 +109,5 @@ namespace neihanshe
         }
 
         #endregion
-
-        private void CmtPanel_OnTapped(object sender, TappedRoutedEventArgs e)
-        {
-
-        }
-
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof (PicturePreviewPage), _post);
-        }
     }
 }

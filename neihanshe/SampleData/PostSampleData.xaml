@@ -1,0 +1,11 @@
+﻿<Model:Post xmlns:Model="using:neihanshe.Core.Model" 
+            Cmt="10" 
+            Dn="-200" Id="10000" 
+            PicUrl="http://t1.qpic.cn/mblogpic/43284151e2a00f889c54/460.jpg" 
+            PicH="Curabitur vestibulum integer duis" 
+            QNum="Nullam parturient vestibulum nunc" 
+            RNum="Praesent adipiscing blandit eget" 
+            SNum="Convallis ante arcu diam vestibulum" 
+            TNum="Amet fusce" 
+            Title="一位哥哥的真实恐怖经历，据说已造成严重心理阴影……( •̥́ ˍ •̀ू )简直太让人心疼" 
+            Up="100" Uid="33444" UserInfo="Lorem" Width="603.38"/>

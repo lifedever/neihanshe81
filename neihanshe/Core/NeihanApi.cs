@@ -39,6 +39,7 @@ namespace neihanshe.Core
             {
                 new Menu(){Name = "index", Title = "首页"},
                 new Menu(){Name = "hot", Title = "热门"},
+                new Menu(){Name = "cmt_hot", Title = "热评"},
                 new Menu(){Name = "new", Title = "最新"}
             };
         }

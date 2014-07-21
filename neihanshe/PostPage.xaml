@@ -5,10 +5,12 @@
     xmlns:local="using:neihanshe"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:convert="using:neihanshe.Core.Convert"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppSolidColorBrush}">
+    <Page.Resources>
+    </Page.Resources>
+    <Grid x:Name="LayoutRoot" Background="{StaticResource AppSolidColorBrush}" d:DataContext="{d:DesignData /SampleData/PostSampleData.xaml}">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -22,8 +24,41 @@
         </Grid.RowDefinitions>
 
         <!--TODO: 应将内容放入以下网格-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
-        </Grid>
+        <ScrollViewer Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Border Background="White" Margin="0 0 0 20" CornerRadius="8" DataContext="{Binding}">
+                <StackPanel Margin="15">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="30" Height="30">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding Uid, Converter={StaticResource AvatarConvert}}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
+                    <Image Source="{Binding PicUrl}" Name="Image" Tapped="Image_Tapped"/>
+                    <Grid Margin="0 20 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Name="UpPanel">
+                                <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
+                                <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="15 0 0 0">
+                                <Image MaxHeight="2000" Source="Assets/Images/cry.png" Style="{StaticResource VoteImageStyle}"/>
+                                <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}" Tapped="CmtPanel_OnTapped">
+                            <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>
+                            <TextBlock Text="{Binding Cmt}" Style="{StaticResource VoteTextStyle}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
     </Grid>
 </Page>

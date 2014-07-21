@@ -17,8 +17,9 @@ namespace neihanshe.Core
         public static void ShowStatusBar()
         {
             var statusBar = StatusBar.GetForCurrentView();
+            statusBar.ShowAsync();
             statusBar.BackgroundColor = Colors.DodgerBlue;
-            statusBar.BackgroundOpacity = 0.7;
+            statusBar.BackgroundOpacity = 1;
             statusBar.ProgressIndicator.Text = Application.Current.Resources["AppName"] as string;
             statusBar.ProgressIndicator.ProgressValue = 0;
             statusBar.ProgressIndicator.ShowAsync();
@@ -31,8 +32,9 @@ namespace neihanshe.Core
         public static void ShowProgressMessage(string message)
         {
             var statusBar = StatusBar.GetForCurrentView();
+            statusBar.ShowAsync();
             statusBar.BackgroundColor = Colors.DodgerBlue;
-            statusBar.BackgroundOpacity = 0.7;
+            statusBar.BackgroundOpacity = 1;
             statusBar.ProgressIndicator.Text = message;
             statusBar.ProgressIndicator.ProgressValue = null;
             statusBar.ProgressIndicator.ShowAsync();

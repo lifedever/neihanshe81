@@ -8,19 +8,8 @@
     x:Class="neihanshe.MainPage"
     mc:Ignorable="d"
     Loaded="MainPage_OnLoaded">
-    
+
     <Page.Resources>
-        <convert:AvatarConvert x:Key="AvatarConvert"></convert:AvatarConvert>
-        <Style TargetType="Image" x:Key="VoteImageStyle">
-            <Setter Property="Width" Value="24" />
-        </Style>
-        
-        <Style TargetType="TextBlock" x:Key="VoteTextStyle">
-            <Setter Property="FontSize" Value="18" />
-            <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="Margin" Value="8 0 0 5" />
-        </Style>
-        
         <DataTemplate x:Key="PostsItemTemplate">
             <Border Background="White" Margin="0 0 0 20" CornerRadius="8">
                 <Grid Margin="15">
@@ -39,7 +28,12 @@
                         <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding UserInfo}" Style="{StaticResource UserNameTextBlockStyle}"></TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
-                    <Image MaxWidth="2000" Width="{Binding Width}" d:IsHidden="True" Source="{Binding PicUrl}" Grid.Row="2" ></Image>
+                    <Grid Grid.Row="2" >
+                        <Image MaxHeight="400" Width="{Binding Width}" Stretch="None" Name="PostImage" d:IsHidden="True" Source="{Binding PicUrl}"></Image>
+                        <Border Background="{ThemeResource ApplicationForegroundThemeBrush}" Height="45" VerticalAlignment="Bottom">
+                            <TextBlock FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">戳进去查看详细</TextBlock>
+                        </Border>
+                    </Grid>
                     <Grid Grid.Row="3">
                         <Grid VerticalAlignment="Bottom">
                             <Grid.ColumnDefinitions>
@@ -56,7 +50,7 @@
                                     <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}" Tapped="CmtPanel_OnTapped">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}">
                                 <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>
                                 <TextBlock Text="{Binding Cmt}" Style="{StaticResource VoteTextStyle}"/>
                             </StackPanel>
@@ -65,6 +59,66 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <Thickness x:Key="PivotPortraitThemePadding">19,20,0,0</Thickness>
+        <Thickness x:Key="PivotLandscapeThemePadding">19,25,0,0</Thickness>
+        <Style x:Key="PivotStyle1" TargetType="Pivot">
+        	<Setter Property="Margin" Value="0"/>
+        	<Setter Property="Padding" Value="0"/>
+        	<Setter Property="Foreground" Value="{ThemeResource PhoneForegroundBrush}"/>
+        	<Setter Property="Background" Value="Transparent"/>
+        	<Setter Property="ItemsPanel">
+        		<Setter.Value>
+        			<ItemsPanelTemplate>
+        				<Grid/>
+        			</ItemsPanelTemplate>
+        		</Setter.Value>
+        	</Setter>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="Pivot">
+        				<Grid x:Name="RootElement" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+        					<Grid.RowDefinitions>
+        						<RowDefinition Height="Auto"/>
+        						<RowDefinition Height="*"/>
+        					</Grid.RowDefinitions>
+        					<VisualStateManager.VisualStateGroups>
+        						<VisualStateGroup x:Name="Orientation">
+        							<VisualState x:Name="Portrait">
+        								<Storyboard>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="TitleContentControl">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotPortraitThemePadding}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="Landscape">
+        								<Storyboard>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="TitleContentControl">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotLandscapeThemePadding}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        								</Storyboard>
+        							</VisualState>
+        						</VisualStateGroup>
+        					</VisualStateManager.VisualStateGroups>
+        					<ContentControl x:Name="TitleContentControl" ContentTemplate="{TemplateBinding TitleTemplate}" Content="{TemplateBinding Title}" Style="{StaticResource PivotTitleContentControlStyle}"/>
+        					<ScrollViewer  x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled">
+        						<PivotPanel x:Name="Panel" VerticalAlignment="Stretch">
+        							<PivotHeaderPanel x:Name="Header">
+        								<PivotHeaderPanel.RenderTransform>
+        									<CompositeTransform x:Name="HeaderTranslateTransform" TranslateX="0"/>
+        								</PivotHeaderPanel.RenderTransform>
+        							</PivotHeaderPanel>
+        							<ItemsPresenter x:Name="PivotItemPresenter">
+        								<ItemsPresenter.RenderTransform>
+        									<TranslateTransform x:Name="ItemsPresenterTranslateTransform" X="0"/>
+        								</ItemsPresenter.RenderTransform>
+        							</ItemsPresenter>
+        						</PivotPanel>
+        					</ScrollViewer>
+        				</Grid>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
     </Page.Resources>
     <Grid x:Name="LayoutRoot" 
           Background="{StaticResource AppSolidColorBrush}"
@@ -74,13 +128,33 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
         <!--数据列表开发-->
-        <Pivot SelectionChanged="Pivot_OnSelectionChanged" Name="DataPivot">
-
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="20 5" VerticalAlignment="Center">
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}">未登录</TextBlock>
+            </StackPanel>
+            <AppBarButton Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Name="LoginAppBarButton" Click="LoginAppBarButton_OnClick" Icon="Contact">
+            </AppBarButton>
+        </Grid>
+        <Pivot Grid.Row="1" SelectionChanged="Pivot_OnSelectionChanged" Name="DataPivot" Style="{StaticResource PivotStyle1}">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="28" Text="{Binding}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
             <PivotItem Header="首页">
                 <Grid x:Name="IndexContentRoot">
-                    <ListView x:Name="IndexPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding IndexPosts}">
+                    <ListView x:Name="IndexPostListView" SelectionChanged="IndexPostListView_OnSelectionChanged" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding IndexPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="IndexFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
                                 <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="IndexNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
@@ -92,7 +166,7 @@
 
             <PivotItem Header="热门">
                 <Grid x:Name="HotContentRoot">
-                    <ListView x:Name="HotPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding HotPosts}">
+                    <ListView x:Name="HotPostListView" SelectionChanged="IndexPostListView_OnSelectionChanged"  ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding HotPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="HotFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
                                 <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="HotNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
@@ -102,9 +176,21 @@
                 </Grid>
             </PivotItem>
 
+            <PivotItem Header="热评">
+                <Grid x:Name="CmtHotContentRoot">
+                    <ListView x:Name="CmtHotPostListView" SelectionChanged="IndexPostListView_OnSelectionChanged"  ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding CmtHotPosts}">
+                        <ListView.Footer>
+                            <Border Background="WhiteSmoke" Name="CmtHotFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
+                                <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="CmtHotNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
+                            </Border>
+                        </ListView.Footer>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+
             <PivotItem Header="最新">
                 <Grid x:Name="NewContentRoot">
-                    <ListView x:Name="NewPostListView" ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding NewPosts}">
+                    <ListView x:Name="NewPostListView" SelectionChanged="IndexPostListView_OnSelectionChanged"  ItemTemplate="{StaticResource PostsItemTemplate}" ItemsSource="{Binding NewPosts}">
                         <ListView.Footer>
                             <Border Background="WhiteSmoke" Name="NewFooterGrid" Visibility="Collapsed" Margin="0 -10 0 0" CornerRadius="8">
                                 <HyperlinkButton Margin="10" Foreground="Black" HorizontalAlignment="Stretch" FontSize="14" Name="NewNextPageButton" Click="CurrentHyperlinkButtonOnClick">点击加载下一页</HyperlinkButton>
@@ -116,14 +202,14 @@
         </Pivot>
         <local:FlyoutTip x:Name="MyFlyoutTip"></local:FlyoutTip>
     </Grid>
-    
+
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.SecondaryCommands >
                 <AppBarButton Label="设置"/>
                 <AppBarButton Label="关于"/>
             </CommandBar.SecondaryCommands>
-            <AppBarButton Icon="Refresh" x:Name="RefreshAppBarButton" Click="RefreshAppBarButton_OnClick"/>
+            <AppBarButton Icon="Refresh" x:Name="RefreshAppBarButton" Label="刷新" Click="RefreshAppBarButton_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
