@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 // “空白应用程序”模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 using Windows.Web.Http;
+using neihanshe.Core;
 
 namespace neihanshe
 {
@@ -70,7 +71,7 @@ namespace neihanshe
         /// 将使用其他入口点。
         /// </summary>
         /// <param name="e">有关启动请求和过程的详细信息。</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -122,6 +123,14 @@ namespace neihanshe
                 {
                     throw new Exception("Failed to create initial page");
                 }
+            }
+
+            object username = SettingUtils.Get("username");
+            object password = SettingUtils.Get("password");
+            if (password != null && username != null)
+            {
+
+                await AppHelper.UserLogin(username as string, password as string);
             }
 
             // 确保当前窗口处于活动状态

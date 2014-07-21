@@ -41,7 +41,7 @@
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Name="UpPanel">
+                                <StackPanel Orientation="Horizontal" Name="UpPanel" Tapped="UpPanel_OnTapped">
                                     <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
                                     <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
