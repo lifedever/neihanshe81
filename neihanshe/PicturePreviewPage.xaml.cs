@@ -1,4 +1,6 @@
-﻿using Windows.Phone.UI.Input;
+﻿using System.Diagnostics;
+using Windows.Phone.UI.Input;
+using Windows.Storage;
 using neihanshe.Common;
 using System;
 using System.Collections.Generic;
@@ -99,13 +101,16 @@ namespace neihanshe
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
             _post = e.Parameter as Post;
 
-
-            string html = string.Format("<center style='margin-top:50px;'><img src='{0}'></div>", _post.PicUrl);
+            var uri = new Uri("ms-appx:///display.txt", UriKind.RelativeOrAbsolute);
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+            string content = await FileIO.ReadTextAsync(file);
+            Debug.WriteLine(content);
+            string html = content.Replace("{imageurl}", _post.PicUrl);
             PicWebView.NavigateToString(html);
         }
 

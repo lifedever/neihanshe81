@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Windows.Phone.UI.Input;
+using Windows.Web.Http;
 using neihanshe.Common;
 using System;
 using System.Collections.Generic;
@@ -126,6 +127,26 @@ namespace neihanshe
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Frame.Navigate(typeof (PicturePreviewPage), _post);
+        }
+
+        private async void UpPanel_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            VoteUpTextBlock.Visibility = Visibility.Visible;
+            VoteUpStoryboard.Begin();
+            VoteUpStoryboard.Completed += (o, o1) =>
+            {
+                VoteUpTextBlock.Visibility = Visibility.Collapsed;
+            };
+        }
+
+        private void DnPanel_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            VoteDnTextBlock.Visibility = Visibility.Visible;
+            VoteDnStoryboard.Begin();
+            VoteDnStoryboard.Completed += (o, o1) =>
+            {
+                VoteDnTextBlock.Visibility = Visibility.Collapsed;
+            };
         }
     }
 }

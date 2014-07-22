@@ -33,7 +33,7 @@
         <Style TargetType="TextBlock" x:Key="VoteTextStyle">
             <Setter Property="FontSize" Value="18" />
             <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="Margin" Value="8 0 0 3" />
+            <Setter Property="Margin" Value="8 0 0 2" />
         </Style>
     </Application.Resources>
 </Application>

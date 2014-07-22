@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.top {
+			margin-top:200px;
+		}
+		.element {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="top"></div>
+	<div id="dialog" class="element">
+		<img src="{imageurl}" alt="" />
+	</div>
+</body>
+</html>
+	

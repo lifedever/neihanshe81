@@ -160,6 +160,7 @@
     <Content Include="Assets\StoreLogo.scale-240.png" />
     <Content Include="Assets\user.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
+    <Content Include="display.txt" />
     <Content Include="SampleData\PostsDataSource\PostsDataSource_Files\image01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

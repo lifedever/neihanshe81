@@ -29,7 +29,7 @@
                     </StackPanel>
                     <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle1}" TextWrapping="Wrap" />
                     <Grid Grid.Row="2" >
-                        <Image MaxHeight="400" Width="{Binding Width}" Stretch="None" Name="PostImage" d:IsHidden="True" Source="{Binding PicUrl}"></Image>
+                        <Image MaxHeight="400" Stretch="None" Width="{Binding Width}" Name="PostImage" d:IsHidden="false" Source="{Binding PicUrl}"></Image>
                         <Border Background="{ThemeResource ApplicationForegroundThemeBrush}" Height="45" VerticalAlignment="Bottom">
                             <TextBlock FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">戳进去查看详细</TextBlock>
                         </Border>
@@ -41,7 +41,7 @@
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Name="UpPanel" Tapped="UpPanel_OnTapped">
+                                <StackPanel Orientation="Horizontal" Name="UpPanel" Tag="{Binding Id}">
                                     <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
                                     <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
@@ -50,7 +50,7 @@
                                     <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel">
                                 <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>
                                 <TextBlock Text="{Binding Cmt}" Style="{StaticResource VoteTextStyle}"/>
                             </StackPanel>

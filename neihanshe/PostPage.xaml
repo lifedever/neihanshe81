@@ -9,6 +9,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
+        <Storyboard x:Name="VoteUpStoryboard">
+            <DoubleAnimation From="0" To="600" Duration="00:00:0.8" 
+                Storyboard.TargetName="VoteUpPlaneProjection" 
+                Storyboard.TargetProperty="GlobalOffsetZ">
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Name="VoteDnStoryboard">
+            <DoubleAnimation From="0" To="600" Duration="00:00:0.8" 
+                Storyboard.TargetName="VoteDnPlaneProjection" 
+                Storyboard.TargetProperty="GlobalOffsetZ">
+            </DoubleAnimation>
+        </Storyboard>
+
     </Page.Resources>
     <Grid x:Name="LayoutRoot" Background="{StaticResource AppSolidColorBrush}" d:DataContext="{d:DesignData /SampleData/PostSampleData.xaml}">
 
@@ -43,14 +57,28 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal" Name="UpPanel">
-                                <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
-                                <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="15 0 0 0">
-                                <Image MaxHeight="2000" Source="Assets/Images/cry.png" Style="{StaticResource VoteImageStyle}"/>
-                                <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
-                            </StackPanel>
+                            <Grid Tapped="UpPanel_OnTapped">
+                                <StackPanel Orientation="Horizontal" Name="UpPanel">
+                                    <Image Source="Assets/Images/smile.png" Style="{StaticResource VoteImageStyle}"/>
+                                    <TextBlock Text="{Binding Up}" Style="{StaticResource VoteTextStyle}"/>
+                                </StackPanel>
+                                <TextBlock FontSize="18" Name="VoteUpTextBlock"  Visibility="Collapsed" FontWeight="Bold" Foreground="DodgerBlue" Text="+1">
+                                    <TextBlock.Projection>
+                                        <PlaneProjection x:Name="VoteUpPlaneProjection" LocalOffsetX="20"></PlaneProjection>
+                                    </TextBlock.Projection>
+                                </TextBlock>
+                            </Grid>
+                            <Grid Tapped="DnPanel_OnTapped">
+                                <StackPanel Orientation="Horizontal" Name="DnPanel" Margin="15 0 0 0">
+                                    <Image MaxHeight="2000" Source="Assets/Images/cry.png" Style="{StaticResource VoteImageStyle}"/>
+                                    <TextBlock Text="{Binding Dn}" Style="{StaticResource VoteTextStyle}"/>
+                                </StackPanel>
+                                <TextBlock FontSize="18" Name="VoteDnTextBlock"  Visibility="Collapsed" FontWeight="Bold" Foreground="Red" Text="-1">
+                                    <TextBlock.Projection>
+                                        <PlaneProjection x:Name="VoteDnPlaneProjection" LocalOffsetX="30"></PlaneProjection>
+                                    </TextBlock.Projection>
+                                </TextBlock>
+                            </Grid>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Name="CmtPanel" Tag="{Binding Id}" Tapped="CmtPanel_OnTapped">
                             <Image Source="Assets/Images/cmt.png" Style="{StaticResource VoteImageStyle}"/>

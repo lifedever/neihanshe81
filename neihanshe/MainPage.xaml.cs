@@ -301,13 +301,5 @@ namespace neihanshe
             Frame.Navigate(typeof (LoginPage));
         }
 
-        private void UpPanel_OnTapped(object sender, TappedRoutedEventArgs e)
-        {
-            var item = GetCurrentSubject().ListView.SelectedItem;
-            if (item == null)
-                return;
-            var post = item as Post;
-            Debug.WriteLine(post.Id);
-        }
     }
 }

@@ -3,7 +3,7 @@
   <Identity Name="6ae8db42-5f6a-419e-969c-57285aed5b55" Publisher="CN=gefangshuai" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="6ae8db42-5f6a-419e-969c-57285aed5b55" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>neihanshe</DisplayName>
+    <DisplayName>内涵社WP8.1</DisplayName>
     <PublisherDisplayName>gefangshuai</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
